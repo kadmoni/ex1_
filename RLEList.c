@@ -107,6 +107,7 @@ RLEListResult RLEListRemove(RLEList list, int index)
             temp = *list.times;
         }
     }
+    
 }
 
 //implement the functions here
