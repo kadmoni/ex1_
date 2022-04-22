@@ -20,10 +20,15 @@ RLEList RLEListCreate()
     *list.next = NULL;
     return list;
 }
-void RLEListDestroy (RLEList list)
-{
-    free(list);
+
+void RLEListDestroy(RLEList list) {
+    while(list) {
+        RLEList toDelete = list;
+        list = list->next;
+        free(toDelete);
+    }
 }
+
 RLEListResult RLEListAppend (RLEList list, char value)
 {
     if ((*list.letter == '\0') || (*list.times == NULL)||(list == NULL)||(value=='\0'))
@@ -60,32 +65,31 @@ int RLEListSize(RLEList list)
 
 char RLEListGet(RLEList list, int index, RLEListResult *result)
 {
-    if ((*list.letter == '\0') || (*list.times == NULL)||(list == NULL))
+    *result = RLEListOfIndex(list, index);
+    if (result == RLE_LIST_SUCCESS)
     {
-        result = RLE_LIST_NULL_ARGUMENT;
-        return 0;
+        return *list.letter;)
     }
-
-    int temp = *list.times;
-    while (index){
-        index -= 1;
-        if (index == 0){
-            result = RLE_LIST_SUCCESS;
-            return *list->letter;
-        }
-        temp - 1;
-        if (temp == 0) {
-            if (*list.next == NULL) {
-                result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
-                return 0;
-            }
-            list = *list.next;
-            temp = *list.times;
-        }
-    }
+    return 0;
 }
 
 RLEListResult RLEListRemove(RLEList list, int index)
+{
+    RLEListResult currentResult = RLEListOfIndex(list, index);
+    if (*list.times == 1){
+        *list.next = **list.next.next;
+        *list.times = **list.next.times;
+        *list.letter = **list.next.letter;
+        list = *list.next;
+        free(list);
+    }
+    else {
+        *list.times -= 1;
+    }
+}
+
+
+RLEListResult RLEListOfIndex(RLEList list, int index)
 {
     if ((*list.letter == '\0') || (*list.times == NULL)||(list == NULL))
     {
@@ -95,10 +99,9 @@ RLEListResult RLEListRemove(RLEList list, int index)
     while (index){
         index -= 1;
         if (index == 0){
-
             return RLE_LIST_SUCCESS;
         }
-        temp - 1;
+        temp -= 1;
         if (temp == 0) {
             if (*list.next == NULL) {
                 return RLE_LIST_INDEX_OUT_OF_BOUNDS;
@@ -107,7 +110,6 @@ RLEListResult RLEListRemove(RLEList list, int index)
             temp = *list.times;
         }
     }
-    
 }
 
 //implement the functions here
