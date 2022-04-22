@@ -62,4 +62,30 @@ RLEListResult RLEListRemove (RLEList list, int index)
     }
 }
 
+int RLEListSize(RLEList list)
+{
+    int count = 0;
+    while (list){
+        count += *list.times;
+        list = *list.next;
+    }
+    return count;
+}
+
+char RLEListGet(RLEList list, int index, RLEListResult *result)
+{
+    if
+    while (index){
+        index -= 1;
+        *list.times - 1;
+        if (*list.times == 0) {
+            if (*list.next == NULL) {
+                result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
+                break;
+            }
+            list = *list.next;
+        }
+    }
+}
+
 //implement the functions here
