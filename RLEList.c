@@ -1,4 +1,5 @@
 #include "RLEList.h"
+#include <stdlib.h>
 
 struct RLEList_t
 {
@@ -46,21 +47,6 @@ RLEListResult RLEListAppend (RLEList list, char value)
     }
 }
 
-RLEListResult RLEListRemove (RLEList list, int index)
-{
-    if ((*list.letter == '\0') || (*list.times == NULL)||(list == NULL)||(value=='\0'))
-    {
-        return RLE_LIST_NULL_ARGUMENT;
-    }
-    if (RLEListSize(list)<index)
-    {
-        return RLE_LIST_INDEX_OUT_OF_BOUNDS;
-    }
-    else
-    {
-
-    }
-}
 
 int RLEListSize(RLEList list)
 {
@@ -74,16 +60,51 @@ int RLEListSize(RLEList list)
 
 char RLEListGet(RLEList list, int index, RLEListResult *result)
 {
-    if
+    if ((*list.letter == '\0') || (*list.times == NULL)||(list == NULL))
+    {
+        result = RLE_LIST_NULL_ARGUMENT;
+        return 0;
+    }
+
+    int temp = *list.times;
     while (index){
         index -= 1;
-        *list.times - 1;
-        if (*list.times == 0) {
+        if (index == 0){
+            result = RLE_LIST_SUCCESS;
+            return *list->letter;
+        }
+        temp - 1;
+        if (temp == 0) {
             if (*list.next == NULL) {
                 result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
-                break;
+                return 0;
             }
             list = *list.next;
+            temp = *list.times;
+        }
+    }
+}
+
+RLEListResult RLEListRemove(RLEList list, int index)
+{
+    if ((*list.letter == '\0') || (*list.times == NULL)||(list == NULL))
+    {
+        return RLE_LIST_NULL_ARGUMENT;
+    }
+    int temp = *list.times;
+    while (index){
+        index -= 1;
+        if (index == 0){
+
+            return RLE_LIST_SUCCESS;
+        }
+        temp - 1;
+        if (temp == 0) {
+            if (*list.next == NULL) {
+                return RLE_LIST_INDEX_OUT_OF_BOUNDS;
+            }
+            list = *list.next;
+            temp = *list.times;
         }
     }
 }
