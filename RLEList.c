@@ -31,7 +31,7 @@ void RLEListDestroy(RLEList list) {
 
 RLEListResult RLEListAppend (RLEList list, char value)
 {
-    if ((*list.letter == '\0') || (*list.times == NULL)||(list == NULL)||(value=='\0'))
+    if ((*list.letter == '\0') || (list.times == NULL)||(list == NULL)||(value=='\0'))
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
