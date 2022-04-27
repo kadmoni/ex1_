@@ -1,0 +1,5 @@
+in RLENodeNumber consider changing list to ptr (changes the list forever)
+what is RLEListOfIndex?
+line 52 why while? consider adding a pointer
+RLEListSize consider adding pointer
+RLEListExportToString consider adding pointer

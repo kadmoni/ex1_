@@ -4,7 +4,12 @@
 #define NODE_INFO 3
 #define EMPTY_POINTER -1
 
- struct RLEList_t {
+RLEListResult RLEListOfIndex(RLEList list, int index);
+int RLENodeNumber(RLEList list);
+
+
+
+struct RLEList_t {
     char letter;
     int times;
     struct RLEList_t* next;
@@ -54,7 +59,7 @@ RLEListResult RLEListAppend (RLEList list, char value)
         list->next= RLEListCreate();
         if (list->next == NULL)
         {
-            return RLE_LIST_OUT_OF_MEMORY
+            return RLE_LIST_OUT_OF_MEMORY;
         }
         list->next->letter = value;
         list->next->times = 1;
@@ -67,7 +72,7 @@ RLEListResult RLEListAppend (RLEList list, char value)
 
 int RLEListSize(RLEList list)
 {
-    if (list == null)
+    if (list == NULL)
     {
         return EMPTY_POINTER;
     }
@@ -170,7 +175,8 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
     return string;
 }
 
-int RLENodeNumber(RLEList list){
+int RLENodeNumber(RLEList list)
+{
     int nodeCount = 1;
     while (list->next)
     {
@@ -178,5 +184,16 @@ int RLENodeNumber(RLEList list){
         list = list->next;
     }
     return nodeCount;
+}
+
+void RLEListMap (RLEList list, MapFunction map_function) // changes the letters in node according to mapfunction
+{
+    RLEList ptr = list; // pointer to the current node being worked on
+    while (ptr != NULL)
+    {
+        char temp = map_function(list->letter);
+        list->letter = temp;
+        ptr = list->next;
+    }
 }
 //implement the functions here

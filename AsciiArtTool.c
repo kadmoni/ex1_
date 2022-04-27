@@ -1,10 +1,10 @@
-#include "RLEList.h"??????
-#include <stdlib.h> ??????
+#include "RLEList.h"
+#include <stdlib.h>
 
 #define NODE_INFO 3
 #define EMPTY_POINTER -1
 
-
+// כותבים כל מה שצריך בתוך התוכנית יש להם ifndef בפנים כנגיע ללינקר
 
 RLEList asciiArtRead(FILE* in_stream)
 {

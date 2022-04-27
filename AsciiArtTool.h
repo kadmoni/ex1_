@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-// בר צריך להבין מה הן כלל הספריות שצריך להוסיף לפה^ אלה כבר היו פה סביר שצריך למחוק
 
 /**
 *   asciiArtRead: Reads the given file and uses RLE method to compress it.
@@ -29,7 +28,7 @@ RLEList asciiArtRead(FILE* in_stream);
 *     LIST_ERROR_RLE if an error has occured
 *     Bar ani lo batuach shaze amoor lihiyot kacha rak omer
 */
-RLEListResult asciiArtPrint(RLEList list, FILE *out_stream);
+RLEListResult asciiArtPrint(RLEList list, FILE* out_stream);
 
 
 /**
