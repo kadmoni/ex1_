@@ -13,7 +13,6 @@ struct RLEList_t{
     struct RLEList_t* next;
 };
 
-
 RLEList RLEListCreate()
 {
     RLEList list = malloc(sizeof(*list));

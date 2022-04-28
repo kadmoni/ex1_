@@ -21,22 +21,22 @@ RLEList asciiArtRead(FILE* in_stream)
 //prints given list to file (not encoded)
 RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
 {
-    RLEList ptr = list; // pointer so header won't change CAN BE CHANGED
+    //RLEList ptr = list; // pointer so header won't change CAN BE CHANGED
     if ((list == NULL)||(out_stream==NULL))
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
-    while (ptr != NULL)
+    while (list != NULL)
     {
-        char toPrint = ptr->letter;
-        for (int counter = ptr->times; counter > 0; counter--) // number of times to print char
+        char toPrint = list->letter;
+        for (int counter = list->times; counter > 0; counter--) // number of times to print char
         {
             if (fputs(&toPrint, out_stream) == EOF)
             {
                 return RLE_LIST_ERROR;
             }
         }
-        ptr = ptr->next;
+        list = list->next;
     }
     return RLE_LIST_SUCCESS;
 }
