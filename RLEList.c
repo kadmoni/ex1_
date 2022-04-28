@@ -48,6 +48,12 @@ RLEListResult RLEListAppend (RLEList list, char value)
         list->times+=1;
         return RLE_LIST_SUCCESS;
     }
+    if ((list->times == 0)&&(list->letter == '\0')
+    {
+        list->letter = value;
+        list->times = 1;
+        return RLE_LIST_SUCCESS;
+    }
 
     while (list->next)
     {
