@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "RLEList.h"
-#include "RLEList.h"
+#include "AsciiArtTool.h"
 
 
 int main(int argc, char** argv) {
@@ -27,7 +27,15 @@ int main(int argc, char** argv) {
 
     if (argv[0] == '-i')
     {
-
+        RLEList header = asciiArtPrint(input);
+        RLEList ptr = header;
+        while (ptr != NULL)
+        {
+            if (ptr->letter == ' ')
+            {
+                ptr->letter = '@';
+            }
+        }
+        asciiArtPrint(header,output);
     }
-
 }

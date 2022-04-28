@@ -9,7 +9,7 @@ int RLENodeNumber(RLEList list);
 
 
 
-struct RLEList_t
+struct RLEList_t{
     char letter;
     int times;
     struct RLEList_t* next;
