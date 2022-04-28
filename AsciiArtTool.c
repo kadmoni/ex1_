@@ -5,6 +5,9 @@
 #define NODE_INFO 3
 #define EMPTY_POINTER -1
 #define BUFFER_SIZE 2
+#define BUFFER_SIZE2 4
+#define NUMBER 1
+#define LETTER 0
 
 RLEList asciiArtRead(FILE* in_stream)
 {
@@ -21,24 +24,21 @@ RLEList asciiArtRead(FILE* in_stream)
 //prints given list to file (not encoded)
 RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
 {
-    //RLEList ptr = list; // pointer so header won't change CAN BE CHANGED
     if ((list == NULL)||(out_stream==NULL))
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
-    while (list != NULL)
+    RLEListResult* result;
+    char* buffer [BUFFER_SIZE2]="";
+    char* encodedStringTemp = fgets(buffer,BUFFER_SIZE2,RLEListExportToString(list,result);
+    while(encodedStringTemp!=NULL)
     {
-        char toPrint = list->letter;
-        for (int counter = list->times; counter > 0; counter--) // number of times to print char
+        for (int count = (int)encodedStringTemp[NUMBER];count>0;count--)
         {
-            if (fputs(&toPrint, out_stream) == EOF)
-            {
-                return RLE_LIST_ERROR;
-            }
+            fputs(encodedStringTemp[LETTER],out_stream);
         }
-        list = list->next;
+        encodedStringTemp = fgets(buffer,BUFFER_SIZE2,RLEListExportToString(list,result);
     }
-    return RLE_LIST_SUCCESS;
 }
 
 RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
