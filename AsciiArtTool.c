@@ -14,9 +14,7 @@ RLEList asciiArtRead(FILE* in_stream)
     {
         RLEListAppend(ptr,buffer[0]);
     }
-    //check if empty
-    //finish implementation after fixing append (need to decide what happens to list)
-    //loop until reaches NULL, return header (not ptr)
+    return header;
 }
 
 //prints given list to file (not encoded)
@@ -49,7 +47,7 @@ RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
-    if (fputs(RLEListExportToString(list,&result),out_stream) == NULL)
+    if (fputs(RLEListExportToString(list,&result),out_stream) == EOF)
     {
         return RLE_LIST_ERROR;
     }
