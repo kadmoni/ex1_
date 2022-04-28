@@ -7,8 +7,6 @@
 RLEListResult RLEListOfIndex(RLEList list, int index);
 int RLENodeNumber(RLEList list);
 
-
-
 struct RLEList_t{
     char letter;
     int times;
@@ -59,20 +57,15 @@ RLEListResult RLEListAppend (RLEList list, char value)
     {
         list = list->next;
     }
-
-    else
+    list->next= RLEListCreate();
+    if (list->next == NULL)
     {
-        list->next= RLEListCreate();
-        if (list->next == NULL)
-        {
-            return RLE_LIST_OUT_OF_MEMORY;
-        }
-        list->next->letter = value;
-        list->next->times = 1;
-        list->next->next = NULL;
-        return RLE_LIST_SUCCESS;
+        return RLE_LIST_OUT_OF_MEMORY;
     }
-    return RLE_LIST_ERROR;
+    list->next->letter = value;
+    list->next->times = 1;
+    list->next->next = NULL;
+    return RLE_LIST_SUCCESS;
 }
 
 
