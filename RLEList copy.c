@@ -155,11 +155,11 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
 
     int stringIndex = 0;
     do {
-        *(string+j) = test->letter;
+        *(string+stringIndex) = test->letter;
         stringIndex++;
-        *(string+j) = test->times + '0';
+        *(string+stringIndex) = test->times + '0';
         stringIndex++;
-        *string = '\n';
+        *(string+stringIndex) = '\n';
         stringIndex++;
         list = list->next;
     } while(list->next);
@@ -191,9 +191,11 @@ void RLEListMap (RLEList list, MapFunction map_function) // changes the letters 
     RLEList ptr = list; // pointer to the current node being worked on
     while (ptr != NULL)
     {
-        char temp = map_function(list->letter);
-        list->letter = temp;
+        if (list->letter == 'c')
+        {
+            char temp = map_function(list->letter);
+            list->letter = temp;
+        }
         ptr = list->next;
     }
 }
-//implement the functions here

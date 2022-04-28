@@ -13,7 +13,6 @@ RLEList asciiArtRead(FILE* in_stream)
     RLEList header = RLEListCreate();
     RLEList ptr = header;
     char buffer [BUFFER_SIZE] = "";
-    //don't need open, we got the file pointer, probably opened in the calling function.
     fgets(buffer,BUFFER_SIZE,in_stream);//check if buffer size should be +1 of buffer to accommodate \0;
     //check input error (returns NULL)
     header->letter = buffer[0];
@@ -26,7 +25,7 @@ RLEList asciiArtRead(FILE* in_stream)
 //prints given list to file (not encoded)
 RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
 {
-    RLEList ptr = list; // pointer so header won't change
+    RLEList ptr = list; // pointer so header won't change CAN BE CHANGED
     if ((list == NULL)||(out_stream==NULL))
     {
         return RLE_LIST_NULL_ARGUMENT;
