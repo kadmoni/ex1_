@@ -3,23 +3,18 @@
 
 #define NODE_INFO 3
 #define EMPTY_POINTER -1
-#define BUFFER_SIZE 1
-
-// כותבים כל מה שצריך בתוך התוכנית יש להם ifndef בפנים כנגיע ללינקר
-//check how to access members of struct RLEList
+#define BUFFER_SIZE 2
 
 RLEList asciiArtRead(FILE* in_stream)
 {
     RLEList header = RLEListCreate();
     RLEList ptr = header;
     char buffer [BUFFER_SIZE] = "";
-    fgets(buffer,BUFFER_SIZE,in_stream);//check if buffer size should be +1 of buffer to accommodate \0;
-    //check input error (returns NULL)
-    header->letter = buffer[0];
-    //check if empty
-    RLEListAppend(ptr,buffer[0])
-    //finish implementation after fixing append (need to decide what happens to list)
-    //loop until reaches NULL, return header (not ptr)
+    while (fgets(buffer,BUFFER_SIZE,in_stream) != NULL)
+    {
+        RLEListAppend(ptr,buffer[0]);
+    }
+    return header;
 }
 
 //prints given list to file (not encoded)
@@ -52,7 +47,7 @@ RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
-    if (fputs(RLEListExportToString(list,&result),out_stream) == NULL)
+    if (fputs(RLEListExportToString(list,&result),out_stream) == EOF)
     {
         return RLE_LIST_ERROR;
     }
