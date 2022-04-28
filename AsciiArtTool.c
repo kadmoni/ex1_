@@ -1,4 +1,5 @@
 #include "RLEList.h"
+#include "AsciiArtTool.h"
 #include <stdlib.h>
 
 #define NODE_INFO 3
