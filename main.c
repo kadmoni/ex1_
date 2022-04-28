@@ -4,6 +4,7 @@
 
 
 int main(int argc, char** argv) {
+
     if (argc != 3) {
         printf("Problem: copy <file1> <file2>", NULL);
         return 0;
@@ -22,7 +23,12 @@ int main(int argc, char** argv) {
 
     if (argv[0] == '-e')
     {
-        
+        RLEList header = asciiArtRead(input);
+        RLEListResult result = asciiArtPrintEncoded(header, output);
+        if (result != RLE_LIST_SUCCESS)
+        {
+            printf("Error encoding ascii art");
+        }
     }
 
     if (argv[0] == '-i')
