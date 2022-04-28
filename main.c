@@ -1,5 +1,11 @@
 #include "RLEList.h"
-#include <stdlib.h>
+#include "RLEList.h"
+
+int main() {
+    printf("Hello, World!\n");
+    return 0;
+}
+
 
 struct RLEList_t
 {
