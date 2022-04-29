@@ -33,15 +33,16 @@ int main(int argc, char** argv) {
 
     if (argv[0] == '-i')
     {
-        RLEList header = asciiArtPrint(input);
-        RLEList ptr = header;
-        while (ptr != NULL)
+        char buffer [BUFFER_SIZE] = "";
+        char* fileToString = fgets(buffer,BUFFER_SIZE,input);
+        while (fileToString != NULL)
         {
-            if (ptr->letter == ' ')
+            if (fileToString[0] == ' ')
             {
-                ptr->letter = '@';
+                fileToString[0] = '@';
             }
+            fputs(fileToString,output);
+            fileToString = fgets(buffer,BUFFER_SIZE,input);
         }
-        asciiArtPrint(header,output);
     }
 }
