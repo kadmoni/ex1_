@@ -184,9 +184,13 @@ int RLENodeNumber(RLEList list)
     return nodeCount;
 }
 
-void RLEListMap (RLEList list, MapFunction map_function) // changes the letters in node according to mapfunction
+RLEListResult RLEListMap (RLEList list, MapFunction map_function) // changes the letters in node according to mapfunction
 {
     RLEList ptr = list; // pointer to the current node being worked on
+    if ((!list) || (map_function == '\0'))
+    {
+        return RLE_LIST_NULL_ARGUMENT;
+    }
     while (ptr != NULL)
     {
         if (list->letter == 'c')
@@ -196,4 +200,5 @@ void RLEListMap (RLEList list, MapFunction map_function) // changes the letters 
         }
         ptr = list->next;
     }
+    return LIST_SUCCESS;
 }
