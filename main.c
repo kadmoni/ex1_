@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "RLEList.h"
 #include "AsciiArtTool.h"
 
@@ -7,6 +8,7 @@
 
 int main(int argc, char** argv) {
 
+    printf("76");
     if (argc != 4) {
         printf("Problem: copy <file1> <file2> %d",argc);
         return 0;
@@ -23,8 +25,9 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    if (argv[1] == "-e")
+    if (!strcmp(argv[1],"-e"))
     {
+	printf("66");
         RLEList header = asciiArtRead(input);
         RLEListResult result = asciiArtPrintEncoded(header, output);
         if (result != RLE_LIST_SUCCESS)
@@ -33,7 +36,9 @@ int main(int argc, char** argv) {
         }
     }
 
-    if (argv[1] == "-i")
+    printf("avar if");
+
+    if (!strcmp(argv[1],"-i"))
     {
         char buffer [BUFFER_SIZE] = "";
         char* fileToString = fgets(buffer,BUFFER_SIZE,input);
