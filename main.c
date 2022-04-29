@@ -12,14 +12,14 @@ int main(int argc, char** argv) {
         return 0;
     }
     FILE *input = fopen(argv[2], "r");
-    if (!input) {
-        printf("Error: cannot open", argv[2]);
+    if (input == NULL) {
+        printf("Error: cannot open %s", argv[2]);
         return 0;
     }
     FILE *output = fopen(argv[3], "w");
-    if (!output) {
+    if (output == NULL) {
         fclose(input);
-        printf("Error: cannot open", argv[3]);
+        printf("Error: cannot open %s", argv[3]);
         return 0;
     }
 
