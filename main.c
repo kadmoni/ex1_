@@ -2,6 +2,8 @@
 #include "RLEList.h"
 #include "AsciiArtTool.h"
 
+#define BUFFER_SIZE 2
+
 
 int main(int argc, char** argv) {
 
