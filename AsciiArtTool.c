@@ -29,15 +29,15 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
         return RLE_LIST_NULL_ARGUMENT;
     }
     RLEListResult* result;
-    char* buffer [BUFFER_SIZE2]="";
-    char* encodedStringTemp = fgets(buffer,BUFFER_SIZE2,RLEListExportToString(list,result);
+    char buffer [BUFFER_SIZE2] = "";
+    char* encodedStringTemp = fgets(buffer,BUFFER_SIZE2,RLEListExportToString(list,result));
     while(encodedStringTemp!=NULL)
     {
         for (int count = (int)encodedStringTemp[NUMBER];count>0;count--)
         {
             fputs(encodedStringTemp[LETTER],out_stream);
         }
-        encodedStringTemp = fgets(buffer,BUFFER_SIZE2,RLEListExportToString(list,result);
+        encodedStringTemp = fgets(buffer,BUFFER_SIZE2,RLEListExportToString(list,result));
     }
 }
 

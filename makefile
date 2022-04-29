@@ -2,7 +2,7 @@ prog: AsciiArtTool.o main.o RLEList.o
 	gcc AsciiArtTool.o main.o RLEList.o -o prog
 
 AsciiArtTool.o: AsciiArtTool.c RLEList.h AsciiArtTool.h
-	gcc -c AsciiArtTool.c
+	gcc -std=c99 -c AsciiArtTool.c
 
 main.o: main.c RLEList.h AsciiArtTool.h
 	gcc -c main.c
