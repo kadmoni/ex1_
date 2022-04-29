@@ -9,40 +9,59 @@
 #define NUMBER 1
 #define LETTER 0
 
+RLEListResult asciiArtPrint(RLEList list, FILE *out_stream);
+
 RLEList asciiArtRead(FILE* in_stream)
 {
+    printf("now in ascii art read \n");
     RLEList header = RLEListCreate();
+    FILE* file;
+    file = fopen("/home/adi.tsach/ex1_/2out.txt", "w");
     RLEList ptr = header;
     char buffer [BUFFER_SIZE] = "";
     while (fgets(buffer,BUFFER_SIZE,in_stream) != NULL)
     {
         RLEListAppend(ptr,buffer[0]);
     }
+//    asciiArtPrint(header, file);
     return header;
 }
 
 //prints given list to file (not encoded)
 RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
 {
+    printf("now in ascii art print function \n");
     if ((list == NULL)||(out_stream==NULL))
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
     RLEListResult* result;
-    char buffer [BUFFER_SIZE2] = "";
-    char* encodedStringTemp = fgets(buffer,BUFFER_SIZE2,RLEListExportToString(list,result));
-    while(encodedStringTemp!=NULL)
+
+    int sizeNode = RLEListSize(list);
+
+    char* stringEncoded = RLEListExportToString(list,result);
+    char* stringNotEncoded = malloc(sizeof(char)* sizeNode);
+    int indexOfEncoded = 0;
+    int indexOfNotEncoded = 0;
+    while(sizeNode>0)
     {
-        for (int count = (int)encodedStringTemp[NUMBER];count>0;count--)
+        for(int times = *(stringEncoded+1); times>0; times--)
         {
-            fputs(encodedStringTemp[LETTER],out_stream);
+            *(stringNotEncoded+indexOfNotEncoded) = *(stringEncoded + indexOfEncoded);
+            indexOfNotEncoded++;
+            sizeNode--;
         }
-        encodedStringTemp = fgets(buffer,BUFFER_SIZE2,RLEListExportToString(list,result));
+        indexOfEncoded+=3;
     }
+    fputs(stringNotEncoded,out_stream);
+    free(stringEncoded);
+    free(stringNotEncoded);
+    return *result;
 }
 
 RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
 {
+    printf("now in ascii art print encoded \n");
     RLEListResult result;
     if ((list == NULL)||(out_stream==NULL))
     {

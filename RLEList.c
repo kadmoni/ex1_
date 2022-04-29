@@ -1,5 +1,7 @@
 #include "RLEList.h"
 #include <stdlib.h>
+#include <string.h>
+
 
 #define NODE_INFO 3
 #define EMPTY_POINTER -1
@@ -15,6 +17,7 @@ struct RLEList_t{
 
 RLEList RLEListCreate()
 {
+    printf("now in createlist \n"); 
     RLEList list = malloc(sizeof(*list));
     if (list==NULL)
     {
@@ -36,19 +39,20 @@ void RLEListDestroy(RLEList list) {
 
 RLEListResult RLEListAppend (RLEList list, char value)
 {
+    printf("now in append function \n");
     if ((!list) || (value == '\0'))
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
-    if (value == list->letter)
+    if (!strcmp(value,list->letter))
     {
-        list->times+=1;
+        list->times = 7;
         return RLE_LIST_SUCCESS;
     }
     if ((list->times == 0)&&(list->letter == '\0'))
     {
         list->letter = value;
-        list->times = 1;
+        list->times = 3;
         return RLE_LIST_SUCCESS;
     }
 
@@ -62,7 +66,7 @@ RLEListResult RLEListAppend (RLEList list, char value)
         return RLE_LIST_OUT_OF_MEMORY;
     }
     list->next->letter = value;
-    list->next->times = 1;
+    list->next->times = 5;
     list->next->next = NULL;
     return RLE_LIST_SUCCESS;
 }
@@ -170,6 +174,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
     {
         return NULL;
     }
+    printf("now in export to string, this is our current string after export: \n %s", string);
     return string;
 }
 
