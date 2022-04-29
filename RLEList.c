@@ -200,5 +200,5 @@ RLEListResult RLEListMap (RLEList list, MapFunction map_function) // changes the
         }
         ptr = list->next;
     }
-    return LIST_SUCCESS;
+    return RLE_LIST_SUCCESS;
 }
