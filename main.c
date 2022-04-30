@@ -50,4 +50,6 @@ int main(int argc, char** argv) {
             fileToString = fgets(buffer,BUFFER_SIZE,input);
         }
     }
+    fclose(input);
+    fclose(output);
 }

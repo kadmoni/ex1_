@@ -51,27 +51,29 @@ RLEListResult RLEListAppend (RLEList list, char value)
         list->times = 1;
         return RLE_LIST_SUCCESS;
     }
+    RLEList tempPointer = list;
     printf("append function also not first node 2 \n");
-    while (list->next)
+    
+    while (tempPointer->next)
     {
-     	list = list->next;
+     	tempPointer = tempPointer->next;
     }
     printf("appened getting to last mode 3 \n");
-    if (value == list->letter)
+    if (value == tempPointer->letter)
     {
-        list->times++;
+        tempPointer->times++;
         return RLE_LIST_SUCCESS;
     }
 
     printf("check if last node has same character \n");
-    list->next = RLEListCreate();
-    if (list->next == NULL)
+    tempPointer->next = RLEListCreate();
+    if (tempPointer->next == NULL)
     {
         return RLE_LIST_OUT_OF_MEMORY;
     }
-    list->next->letter = value;
-    list->next->times = 1;
-    list->next->next = NULL;
+    tempPointer->next->letter = value;
+    tempPointer->next->times = 1;
+    tempPointer->next->next = NULL;
     printf("append: set new last node function5 \n");
     return RLE_LIST_SUCCESS;
 }
@@ -170,8 +172,8 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         stringIndex++;
         *(string+stringIndex) = '\n';
         stringIndex++;
-        tempPointer = tempPointer->next;
-    } while(tempPointer->next);
+	tempPointer = tempPointer->next;
+    } while(tempPointer);
 
     if (stringIndex == NODE_INFO*nodeCount){
         *result = RLE_LIST_SUCCESS;
@@ -187,7 +189,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
 
 int RLENodeNumber(RLEList list)
 {
-    int nodeCount = 4;
+    int nodeCount = 1;
     RLEList tempPointer = list;
     while (tempPointer->next)
     {
