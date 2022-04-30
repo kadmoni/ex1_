@@ -231,7 +231,8 @@ RLEListResult RLEListMap (RLEList list, MapFunction map_function) // changes the
             char temp = map_function(list->letter);
             list->letter = temp;
         }
-        ptr = list->next;
+        temp = list->next;
     }
     return RLE_LIST_SUCCESS;
 }
+
