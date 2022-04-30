@@ -62,4 +62,6 @@ char invertMapping (char toInvert)
     {
         return '@';
     }
+    fclose(input);
+    fclose(output);
 }
