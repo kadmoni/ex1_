@@ -59,6 +59,7 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
     return *result;
 }
 
+
 RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
 {
     printf("now in ascii art print encoded \n");

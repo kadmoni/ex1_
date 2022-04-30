@@ -8,7 +8,6 @@
 
 int main(int argc, char** argv) {
 
-    printf("76");
     if (argc != 4) {
         printf("Problem: copy <file1> <file2> %d",argc);
         return 0;
@@ -27,7 +26,6 @@ int main(int argc, char** argv) {
 
     if (!strcmp(argv[1],"-e"))
     {
-	printf("66");
         RLEList header = asciiArtRead(input);
         RLEListResult result = asciiArtPrintEncoded(header, output);
         if (result != RLE_LIST_SUCCESS)

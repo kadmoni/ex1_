@@ -44,30 +44,35 @@ RLEListResult RLEListAppend (RLEList list, char value)
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
-    if (!strcmp(value,list->letter))
+    printf("append: not null1 parameteres 1 \n");
+    if ((list->times == 0)||(list->letter == '\0'))
     {
-        list->times = 7;
+     	list->letter = value;
+        list->times = 1;
         return RLE_LIST_SUCCESS;
     }
-    if ((list->times == 0)&&(list->letter == '\0'))
+    printf("append function also not first node 2 \n");
+    while (list->next)
     {
-        list->letter = value;
-        list->times = 3;
+     	list = list->next;
+    }
+    printf("appened getting to last mode 3 \n");
+    if (value == list->letter)
+    {
+        list->times++;
         return RLE_LIST_SUCCESS;
     }
 
-    while (list->next)
-    {
-        list = list->next;
-    }
-    list->next= RLEListCreate();
+    printf("check if last node has same character \n");
+    list->next = RLEListCreate();
     if (list->next == NULL)
     {
         return RLE_LIST_OUT_OF_MEMORY;
     }
     list->next->letter = value;
-    list->next->times = 5;
+    list->next->times = 1;
     list->next->next = NULL;
+    printf("append: set new last node function5 \n");
     return RLE_LIST_SUCCESS;
 }
 
@@ -174,7 +179,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
     {
         return NULL;
     }
-    printf("now in export to string, this is our current string after export: \n %s", string);
+    printf("now in export to string, this is our current string after export: \n%s", string);
     return string;
 }
 
