@@ -157,19 +157,21 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
     }
 
     int nodeCount = RLENodeNumber(list);
-
     char *string = malloc(sizeof(char)*nodeCount*NODE_INFO);
+ 
+    RLEList tempPointer	= list;
+
 
     int stringIndex = 0;
     do {
-        *(string+stringIndex) = list->letter;
+        *(string+stringIndex) = tempPointer->letter;
         stringIndex++;
-        *(string+stringIndex) = list->times + '0';
+        *(string+stringIndex) = tempPointer->times + '0';
         stringIndex++;
         *(string+stringIndex) = '\n';
         stringIndex++;
-        list = list->next;
-    } while(list->next);
+        tempPointer = tempPointer->next;
+    } while(tempPointer->next);
 
     if (stringIndex == NODE_INFO*nodeCount){
         *result = RLE_LIST_SUCCESS;
@@ -185,7 +187,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
 
 int RLENodeNumber(RLEList list)
 {
-    int nodeCount = 2;
+    int nodeCount = 4;
     RLEList tempPointer = list;
     while (tempPointer->next)
     {
