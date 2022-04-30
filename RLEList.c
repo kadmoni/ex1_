@@ -185,11 +185,12 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
 
 int RLENodeNumber(RLEList list)
 {
-    int nodeCount = 1;
-    while (list->next)
+    int nodeCount = 2;
+    RLEList tempPointer = list;
+    while (tempPointer->next)
     {
         nodeCount++;
-        list = list->next;
+        tempPointer = tempPointer->next;
     }
     return nodeCount;
 }
