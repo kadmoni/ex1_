@@ -32,14 +32,22 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
     int listSize = RLEListSize(list);
     int index = 0;
     RLEListResult result;
-    while (index < listSize)
-    {
-        char currentLetter [2]="";
-        currentLetter [0] = RLEListGet(list,index, &result);
-        fputs(currentLetter,out_stream);
-        index++;
-    }
+    //char* string = malloc((sizeof)(*string)*listSize);
+    char* string = RLEListExportToString(list,&result);
     RLEListDestroy(list);
+    while (string[0] != '\0')
+    {
+        int counter = (int)(*(string+1)-'0');
+        for (counter;counter>0;counter--)
+        {
+            char array [2];
+            array[0]= string[0];
+            array[1]= '\0';
+            fputs(array,out_stream);
+        }
+        string=string+3;
+    }
+    //free(string);
     return RLE_LIST_SUCCESS;
 }
     /*

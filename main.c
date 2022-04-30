@@ -4,13 +4,9 @@
 #include "AsciiArtTool.h"
 
 #define BUFFER_SIZE 2
-<<<<<<< HEAD
 
 char invertMapping (char toInvert);
 
-=======
-char invertMapping (char toInvert);
->>>>>>> ca33e1a125c02b76dc6f6036198831764a010bbf
 
 int main(int argc, char** argv) {
 
@@ -46,8 +42,7 @@ int main(int argc, char** argv) {
     if (!strcmp(argv[1],"-i"))
     {
 	    printf("passed headerassed headerassed headerassed headerassed headerassed headerassed headerassed headerassed headerassed headerassed header ");
-        MapFunction ptr = invertMapping;
-	    RLEListMap(header, ptr);
+	    RLEListMap(header, &invertMapping);
         asciiArtPrint(header, output);
     }
         /*char buffer [BUFFER_SIZE] = "";

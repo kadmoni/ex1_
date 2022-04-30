@@ -139,29 +139,19 @@ RLEListResult RLEListRemove(RLEList list, int index)
 
 RLEListResult RLEListOfIndex(RLEList list, int index)
 {
-    if (!list)
-    {
-        return RLE_LIST_NULL_ARGUMENT;
-    }
-    int temp = list->times;
-    if (index == 0)
-    {
-        return RLE_LIST_SUCCESS;
-    }
-    do {
-        index--;
-        if (index == 0){
-            return RLE_LIST_SUCCESS;
-        }
-        temp--;
-        if (temp == 0) {
-            if (list->next == NULL) {
-                return RLE_LIST_INDEX_OUT_OF_BOUNDS;
+    while(list->next!=NULL)
+        {
+        int counter = list->times;
+        for (counter; counter>0;counter--)
+        {
+            index--;
+            if (index == 0)
+            {
+                return RLE_LIST_SUCCESS;
             }
-            list = list->next;
-            temp = list->times;
         }
-    } while (index);
+        list=list->next;
+    }
 }
 
 char* RLEListExportToString(RLEList list, RLEListResult* result)
@@ -216,7 +206,7 @@ RLEListResult RLEListMap (RLEList list, MapFunction map_function) // changes the
 {
     RLEList ptr = list; // pointer to the current node being worked on
     char temp;
-    if ((list==NULL) || (map_function == NULL))
+    if ((ptr==NULL) || (map_function == NULL))
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
