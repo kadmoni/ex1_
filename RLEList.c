@@ -141,8 +141,7 @@ RLEListResult RLEListOfIndex(RLEList list, int index)
 {
     while(list->next!=NULL)
         {
-        int counter = list->times;
-        for (counter; counter>0;counter--)
+        for (int counter = list->times; counter>0;counter--)
         {
             index--;
             if (index == 0)
@@ -152,6 +151,7 @@ RLEListResult RLEListOfIndex(RLEList list, int index)
         }
         list=list->next;
     }
+    return RLE_LIST_SUCCESS; // change the retrun value and placement (maybe)
 }
 
 char* RLEListExportToString(RLEList list, RLEListResult* result)
