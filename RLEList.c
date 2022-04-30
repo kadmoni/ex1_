@@ -162,7 +162,7 @@ RLEListResult RLEListOfIndex(RLEList list, int index)
             temp = list->times;
         }
     } while (index);
-    return LIST_ERROR_RLE;
+    return RLE_LIST_ERROR;
 }
 
 char* RLEListExportToString(RLEList list, RLEListResult* result)
@@ -219,12 +219,12 @@ int RLENodeNumber(RLEList list)
 
 RLEListResult RLEListMap (RLEList list, MapFunction map_function) // changes the letters in node according to mapfunction
 {
-    RLEList tempPointer = list; // pointer to the current node being worked on
+    RLEList temp = list; // pointer to the current node being worked on
     if ((!list) || (map_function == '\0'))
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
-    while (tempPointer != NULL)
+    while (temp != NULL)
     {
         if (list->letter == 'c')
         {
