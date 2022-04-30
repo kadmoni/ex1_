@@ -22,6 +22,7 @@ RLEList asciiArtRead(FILE* in_stream)
     {
         RLEListAppend(ptr,buffer[0]);
     }
+    printf("/////////////////////////////////////////////////////////");
     return header;
 }
 
@@ -39,6 +40,7 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
         index++;
     }
     RLEListDestroy(list);
+    return RLE_LIST_SUCCESS;
 }
     /*
     printf("now in ascii art print function \n");

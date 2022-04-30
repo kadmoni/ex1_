@@ -87,12 +87,12 @@ int RLEListSize(RLEList list)
     {
         return EMPTY_POINTER;
     }
-
-    int count = list->times;
-    while (list->next)
+    RLEList tempPointer = list;
+    int count = tempPointer->times;
+    while (tempPointer->next)
     {
-        list = list->next;
-        count += list->times;
+        tempPointer = tempPointer->next;
+        count += tempPointer->times;
     }
     return count;
 }
