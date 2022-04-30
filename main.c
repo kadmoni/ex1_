@@ -4,7 +4,7 @@
 #include "AsciiArtTool.h"
 
 #define BUFFER_SIZE 2
-
+char invertMapping (char toInvert);
 
 int main(int argc, char** argv) {
 
@@ -12,6 +12,7 @@ int main(int argc, char** argv) {
         printf("Problem: copy <file1> <file2> %d",argc);
         return 0;
     }
+
     FILE *input = fopen(argv[2], "r");
     if (input == NULL) {
         printf("Error: cannot open %s", argv[2]);
@@ -23,10 +24,10 @@ int main(int argc, char** argv) {
         printf("Error: cannot open %s", argv[3]);
         return 0;
     }
-
+    
+    RLEList header = asciiArtRead(input);
     if (!strcmp(argv[1],"-e"))
     {
-        RLEList header = asciiArtRead(input);
         RLEListResult result = asciiArtPrintEncoded(header, output);
         if (result != RLE_LIST_SUCCESS)
         {
@@ -38,8 +39,9 @@ int main(int argc, char** argv) {
 
     if (!strcmp(argv[1],"-i"))
     {
-        RLEList header = asciiArtRead();
-        RLEListMap(header, &invertMapping);
+	printf("passed headerassed headerassed headerassed headerassed headerassed headerassed headerassed headerassed headerassed headerassed header ");
+        MapFunction ptr = invertMapping;
+	RLEListMap(header, ptr);
         asciiArtPrint(header, output);
     }
         /*char buffer [BUFFER_SIZE] = "";
@@ -54,7 +56,8 @@ int main(int argc, char** argv) {
             fileToString = fgets(buffer,BUFFER_SIZE,input);
         }
          */
-    }
+	fclose(input);
+   	fclose(output);
 }
 char invertMapping (char toInvert)
 {
@@ -62,6 +65,8 @@ char invertMapping (char toInvert)
     {
         return '@';
     }
-    fclose(input);
-    fclose(output);
+    else
+    {
+        return toInvert;
+    }
 }
