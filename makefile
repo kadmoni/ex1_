@@ -1,5 +1,5 @@
-prog: AsciiArtTool.o main.o RLEList.o
-	gcc AsciiArtTool.o main.o RLEList.o -o prog
+AsciiArtTool: AsciiArtTool.o main.o RLEList.o
+	gcc -std=c99 -o AsciiArtTool -I/home/mtm/public/2122b/ex1 -Itool -Wall -pedantic-errors -Werror -DNDEBUG *.c tool/*.c
 
 AsciiArtTool.o: AsciiArtTool.c RLEList.h AsciiArtTool.h
 	gcc -std=c99 -c AsciiArtTool.c
