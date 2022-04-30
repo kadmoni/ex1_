@@ -5,6 +5,8 @@
 
 #define BUFFER_SIZE 2
 
+char invertMapping (char toInvert);
+
 
 int main(int argc, char** argv) {
 
@@ -38,8 +40,9 @@ int main(int argc, char** argv) {
 
     if (!strcmp(argv[1],"-i"))
     {
-        RLEList header = asciiArtRead();
-        RLEListMap(header, &invertMapping);
+        RLEList header = asciiArtRead(input);
+        MapFunction ptr  = invertMapping;
+        RLEListMap(header,ptr);
         asciiArtPrint(header, output);
     }
         /*char buffer [BUFFER_SIZE] = "";
@@ -54,7 +57,8 @@ int main(int argc, char** argv) {
             fileToString = fgets(buffer,BUFFER_SIZE,input);
         }
          */
-    }
+    fclose(input);
+    fclose(output);
 }
 char invertMapping (char toInvert)
 {
@@ -62,6 +66,8 @@ char invertMapping (char toInvert)
     {
         return '@';
     }
-    fclose(input);
-    fclose(output);
+    else
+    {
+        return toInvert;
+    }
 }

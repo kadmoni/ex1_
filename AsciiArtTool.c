@@ -33,7 +33,9 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
     RLEListResult result;
     while (index < listSize)
     {
-        fputs(&RLEListGet(list,index, &result),out_stream);
+        char currentLetter [2]="";
+        currentLetter [0] = RLEListGet(list,index, &result);
+        fputs(currentLetter,out_stream);
         index++;
     }
     RLEListDestroy(list);
