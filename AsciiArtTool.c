@@ -2,7 +2,8 @@
 #include "AsciiArtTool.h"
 #include <stdlib.h>
 
-#define NODE_INFO 3
+#define MEMBERS_OF_NODE 3
+#define CURRENT_CHAR 0
 #define EMPTY_POINTER -1
 #define BUFFER_SIZE 2
 #define BUFFER_SIZE2 4
@@ -15,33 +16,45 @@ RLEList asciiArtRead(FILE* in_stream)
 {
     printf("now in ascii art read \n");
     RLEList header = RLEListCreate();
-    FILE* file;
-    file = fopen("/home/adi.tsach/ex1_/2out.txt", "w");
     RLEList ptr = header;
     char buffer [BUFFER_SIZE] = "";
     while (fgets(buffer,BUFFER_SIZE,in_stream) != NULL)
     {
         RLEListAppend(ptr,buffer[0]);
     }
-//    asciiArtPrint(header, file);
     return header;
 }
 
 //prints given list to file (not encoded)
 RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
 {
+    int listSize = RLEListSize(list);
+    int index = 0;
+    RLEListResult result;
+    while (index < listSize)
+    {
+        fputs(&RLEListGet(list,index, &result),out_stream);
+        index++;
+    }
+    RLEListDestroy(list);
+}
+    /*
     printf("now in ascii art print function \n");
     if ((list == NULL)||(out_stream==NULL))
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
     RLEListResult* result;
-
-    int sizeNode = RLEListSize(list);
-
     char* stringEncoded = RLEListExportToString(list,result);
-    char* stringNotEncoded = malloc(sizeof(char)* sizeNode);
-    int indexOfEncoded = 0;
+    while (stringEncoded != NULL)
+    {
+        for (int counter = (int)(stringEncoded[1]-'0');counter > 0; counter--)
+        {
+            fputs(&stringEncoded[0],out_stream);
+        }
+        stringEncoded += MEMBERS_OF_NODE;
+    }
+    /*int indexOfEncoded = 0;
     int indexOfNotEncoded = 0;
     while(sizeNode>0)
     {
@@ -58,7 +71,7 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
     free(stringNotEncoded);
     return *result;
 }
-
+*/
 
 RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
 {
@@ -70,10 +83,12 @@ RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
     }
     if (fputs(RLEListExportToString(list,&result),out_stream) == EOF)
     {
+        RLEListDestroy(list);
         return RLE_LIST_ERROR;
     }
     else
     {
+        RLEListDestroy(list);
         return RLE_LIST_SUCCESS;
     }
 }

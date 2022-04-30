@@ -38,7 +38,11 @@ int main(int argc, char** argv) {
 
     if (!strcmp(argv[1],"-i"))
     {
-        char buffer [BUFFER_SIZE] = "";
+        RLEList header = asciiArtRead();
+        RLEListMap(header, &invertMapping);
+        asciiArtPrint(header, output);
+    }
+        /*char buffer [BUFFER_SIZE] = "";
         char* fileToString = fgets(buffer,BUFFER_SIZE,input);
         while (fileToString != NULL)
         {
@@ -49,5 +53,13 @@ int main(int argc, char** argv) {
             fputs(fileToString,output);
             fileToString = fgets(buffer,BUFFER_SIZE,input);
         }
+         */
+    }
+}
+char invertMapping (char toInvert)
+{
+    if (toInvert == ' ')
+    {
+        return '@';
     }
 }

@@ -95,12 +95,13 @@ int RLEListSize(RLEList list)
 
 char RLEListGet(RLEList list, int index, RLEListResult *result)
 {
-    *result = RLEListOfIndex(list, index);
-    if (result != RLE_LIST_SUCCESS)
+    RLEList ptr = list;
+    *result = RLEListOfIndex(ptr, index);
+    if (*result != RLE_LIST_SUCCESS)
     {
         return 0;
     }
-    return list->letter;
+    return ptr->letter;
 }
 
 RLEListResult RLEListRemove(RLEList list, int index)
@@ -155,11 +156,8 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
     {
         *result = RLE_LIST_NULL_ARGUMENT;
     }
-
     int nodeCount = RLENodeNumber(list);
-
     char *string = malloc(sizeof(char)*nodeCount*NODE_INFO);
-
     int stringIndex = 0;
     do {
         *(string+stringIndex) = list->letter;
@@ -198,17 +196,15 @@ int RLENodeNumber(RLEList list)
 RLEListResult RLEListMap (RLEList list, MapFunction map_function) // changes the letters in node according to mapfunction
 {
     RLEList ptr = list; // pointer to the current node being worked on
-    if ((!list) || (map_function == '\0'))
+    char temp;
+    if ((!list) || (map_function == NULL))
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
     while (ptr != NULL)
     {
-        if (list->letter == 'c')
-        {
-            char temp = map_function(list->letter);
-            list->letter = temp;
-        }
+        temp = map_function(list->letter);
+        list->letter = temp;
         ptr = list->next;
     }
     return RLE_LIST_SUCCESS;
