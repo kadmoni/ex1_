@@ -28,19 +28,20 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
 {
     RLEListResult result;
     char* string = RLEListExportToString(list,&result);
+    char*header = string;
     RLEListDestroy(list);
     while (string[0] != '\0')
     {
         for (int counter = (int)(*(string+1)-'0');counter>0;counter--)
         {
-            char array [2];
-            array[0]= string[0];
+            char array [2] ={0};
+            array[0]= *string;
             array[1]= '\0';
             fputs(array,out_stream);
         }
         string=string+3;
     }
-    free(string);
+    free(header);
     return RLE_LIST_SUCCESS;
 }
     /*

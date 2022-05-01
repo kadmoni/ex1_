@@ -187,7 +187,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         nodeCount++;
         tempPointer = tempPointer->next;
     }
-    char *string = malloc(sizeof(char)*nodeCount*NODE_INFO);
+    char *string = malloc(sizeof(char)*nodeCount*NODE_INFO+1);
     if (!string)
     {
         *result = RLE_LIST_OUT_OF_MEMORY;
