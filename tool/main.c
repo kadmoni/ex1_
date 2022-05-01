@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
     
     if (!strcmp(argv[1],"-e"))
     {
-	RLEList header = asciiArtRead(input);
+	    RLEList header = asciiArtRead(input);
         RLEListResult result = asciiArtPrintEncoded(header, output);
         if (result != RLE_LIST_SUCCESS)
         {
@@ -39,8 +39,8 @@ int main(int argc, char** argv) {
 
     if (!strcmp(argv[1],"-i"))
     {
-	RLEList header = asciiArtRead(input);
-	RLEListMap(header, &invertMapping);
+	    RLEList header = asciiArtRead(input);
+	    RLEListMap(header, &invertMapping);
         asciiArtPrint(header, output);
     }
     fclose(input);

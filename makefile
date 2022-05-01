@@ -1,13 +1,11 @@
-CC = gcc
-OBJS = RLEList.o RLEUnitTests//RLEListUnitTest.o
-EXEC = RLEUnitTests//RLEUnitTester.exe
-DEBUG_FLAG = -g # now empty, assign -g for debug
-COMP_FLAG = -std=c99 -Wall -Werror -pedantic-errors $(DEBUG_FLAG)
-$(EXEC) : $(OBJS)
-	$(CC) $(DEBUG_FLAG) $(OBJS) -o $@
-RLEList.o : RLEList.c RLEList.h
-	$(CC) -c $(DEBUG_FLAG) $(COMP_FLAG) $*.c
-RLEUnitTests//RLEListUnitTest.o : RLEUnitTests//RLEListUnitTest.c RLEUnitTests//test_utilities.h RLEList.h
-	$(CC) -c $(DEBUG_FLAG) $(COMP_FLAG) $*.c -o $@
-clean:
-	rm -f $(OBJS) $(EXEC)
+AsciiArtTool: AsciiArtTool.o main.o RLEList.o
+	gcc -std=c99 -g -o AsciiArtTool -I/home/mtm/public/2122b/ex1 -Itool -Wall -pedantic-errors -Werror -DNDEBUG *.c tool/*.c
+
+AsciiArtTool.o: tool/AsciiArtTool.c tool/RLEList.h tool/AsciiArtTool.h
+	gcc -std=c99 -g -c tool/AsciiArtTool.c
+
+main.o: tool/main.c tool/RLEList.h tool/AsciiArtTool.h
+	gcc -std=c99 -g -c ./tool/main.c
+
+RLEList.o: RLEList.c tool/RLEList.h
+	gcc -std=c99 -g -c  RLEList.c

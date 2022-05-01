@@ -40,6 +40,7 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
         }
         string=string+3;
     }
+    free(string);
     return RLE_LIST_SUCCESS;
 }
     /*
@@ -84,13 +85,21 @@ RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
-    if (fputs(RLEListExportToString(list,&result),out_stream) == EOF)
+    char* string = RLEListExportToString(list,&result);
+    if (string ==NULL)
     {
+        RLEListDestroy(list);
+        return RLE_LIST_ERROR;
+    }
+    if (fputs(string,out_stream) == EOF)
+    {
+        free(string);
         RLEListDestroy(list);
         return RLE_LIST_ERROR;
     }
     else
     {
+        free(string);
         RLEListDestroy(list);
         return RLE_LIST_SUCCESS;
     }
