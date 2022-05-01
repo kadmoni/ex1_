@@ -14,7 +14,6 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream);
 
 RLEList asciiArtRead(FILE* in_stream)
 {
-    printf("now in ascii art read \n");
     RLEList header = RLEListCreate();
     RLEList ptr = header;
     char buffer [BUFFER_SIZE] = "";
@@ -22,11 +21,9 @@ RLEList asciiArtRead(FILE* in_stream)
     {
         RLEListAppend(ptr,buffer[0]);
     }
-    printf("/////////////////////////////////////////////////////////");
     return header;
 }
 
-//prints given list to file (not encoded)
 RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
 {
     RLEListResult result;
@@ -43,7 +40,6 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
         }
         string=string+3;
     }
-    //free(string);
     return RLE_LIST_SUCCESS;
 }
     /*
@@ -83,7 +79,6 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
 
 RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
 {
-    printf("now in ascii art print encoded \n");
     RLEListResult result;
     if ((list == NULL)||(out_stream==NULL))
     {

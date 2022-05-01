@@ -17,7 +17,6 @@ struct RLEList_t{
 
 RLEList RLEListCreate()
 {
-    printf("now in createlist \n"); 
     RLEList list = malloc(sizeof(*list));
     if (list==NULL)
     {
@@ -39,12 +38,10 @@ void RLEListDestroy(RLEList list) {
 
 RLEListResult RLEListAppend (RLEList list, char value)
 {
-    printf("now in append function \n");
     if ((!list) || (value == '\0'))
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
-    printf("append: not null1 parameteres 1 \n");
     if ((list->times == 0)||(list->letter == '\0'))
     {
      	list->letter = value;
@@ -53,20 +50,18 @@ RLEListResult RLEListAppend (RLEList list, char value)
     }
     
     RLEList tempPointer = list;
-    printf("append function also not first node 2 \n");
     
     while (tempPointer->next)
     {
      	tempPointer = tempPointer->next;
     }
-    printf("appened getting to last mode 3 \n");
+
     if (value == tempPointer->letter)
     {
         tempPointer->times++;
         return RLE_LIST_SUCCESS;
     }
 
-    printf("check if last node has same character \n");
     tempPointer->next = RLEListCreate();
     if (tempPointer->next == NULL)
     {
@@ -76,7 +71,6 @@ RLEListResult RLEListAppend (RLEList list, char value)
     tempPointer->next->letter = value;
     tempPointer->next->times = 1;
     tempPointer->next->next = NULL;
-    printf("append: set new last node function5 \n");
     return RLE_LIST_SUCCESS;
 }
 
@@ -186,7 +180,6 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
     {
         return NULL;
     }
-    printf("now in export to string, this is our current string after export: \n%s", string);
     return string;
 }
 

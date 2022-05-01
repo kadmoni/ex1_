@@ -11,7 +11,7 @@ char invertMapping (char toInvert);
 int main(int argc, char** argv) {
 
     if (argc != 4) {
-        printf("Problem: copy <file1> <file2> %d",argc);
+        printf("Problem: unexpected number of arguments received %d",argc);
         return 0;
     }
 
@@ -27,9 +27,9 @@ int main(int argc, char** argv) {
         return 0;
     }
     
-    RLEList header = asciiArtRead(input);
     if (!strcmp(argv[1],"-e"))
     {
+	RLEList header = asciiArtRead(input);
         RLEListResult result = asciiArtPrintEncoded(header, output);
         if (result != RLE_LIST_SUCCESS)
         {
@@ -37,29 +37,17 @@ int main(int argc, char** argv) {
         }
     }
 
-    printf("avar if");
-
     if (!strcmp(argv[1],"-i"))
     {
-	    printf("passed headerassed headerassed headerassed headerassed headerassed headerassed headerassed headerassed headerassed headerassed header ");
-	    RLEListMap(header, &invertMapping);
+	RLEList header = asciiArtRead(input);
+	RLEListMap(header, &invertMapping);
         asciiArtPrint(header, output);
     }
-        /*char buffer [BUFFER_SIZE] = "";
-        char* fileToString = fgets(buffer,BUFFER_SIZE,input);
-        while (fileToString != NULL)
-        {
-            if (fileToString[0] == ' ')
-            {
-                fileToString[0] = '@';
-            }
-            fputs(fileToString,output);
-            fileToString = fgets(buffer,BUFFER_SIZE,input);
-        }
-         */
-	fclose(input);
-   	fclose(output);
+    fclose(input);
+    fclose(output);
 }
+
+
 char invertMapping (char toInvert)
 {
     if (toInvert == ' ')
