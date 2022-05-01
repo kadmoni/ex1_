@@ -93,41 +93,89 @@ int RLEListSize(RLEList list)
 
 char RLEListGet(RLEList list, int index, RLEListResult *result)
 {
-    RLEList ptr = list;
-    *result = RLEListOfIndex(ptr, index);
-    if (*result != RLE_LIST_SUCCESS)
+    *result = RLE_LIST_SUCCESS;
+    RLEList tempPointer = list;
+    while(tempPointer != NULL)
     {
+        for (int counter = tempPointer->times; counter>0;counter--)
+        {
+            index--;
+            if (index == 0)
+            {
+                break;
+            }
+        }
+        if (index == 0)
+        {
+            break;
+        }
+        tempPointer=tempPointer->next;
+    }
+    if (tempPointer == NULL)
+    {
+        *result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
         return '0';
     }
-    return ptr->letter;
+    return tempPointer->letter;
 }
 
 RLEListResult RLEListRemove(RLEList list, int index)
 {
     RLEList tempPointer = list;
-    RLEListResult currentResult = RLEListOfIndex(tempPointer, index);
-    if (currentResult != RLE_LIST_SUCCESS)
+    while(tempPointer != NULL)
     {
-        return currentResult;
+        for (int counter = tempPointer->times; counter>0;counter--)
+        {
+            index--;
+            if (index == 0)
+            {
+                break;
+            }
+        }
+        if (index == 0)
+        {
+            break;
+        }
+        tempPointer=tempPointer->next;
+    }
+    if (tempPointer == NULL)
+    {
+        return RLE_LIST_INDEX_OUT_OF_BOUNDS;
     }
 
-    if (tempPointer->times == 1)
+//   // RLEListResult currentResult = RLEListOfIndex(tempPointer, index);
+//    if (currentResult != RLE_LIST_SUCCESS)
+//    {
+//        return currentResult;
+//    }
+    if (tempPointer->next == NULL)
+    {
+        if (tempPointer->times == 1)
+        {
+            RLEListDestroy(tempPointer);
+        }
+        else {
+            (tempPointer->times)--;
+        }
+    }
+    else if (tempPointer->times == 1)
     {
         tempPointer->next = tempPointer->next->next;
         tempPointer->times = tempPointer->next->times;
         tempPointer->letter = tempPointer->next->letter;
         if (tempPointer == list)
 	    {
-	        list = list->next;
+
 	    }
-        tempPointer = tempPointer->next;  
-        free(tempPointer);
+        free(tempPointer->next);
+        return RLE_LIST_SUCCESS;
     }
     else {
-        tempPointer->times--;
+        (tempPointer->times)--;
+        return RLE_LIST_SUCCESS;
     }
 
-    return currentResult;
+    return RLE_LIST_SUCCESS;
 }
 
 
@@ -145,7 +193,7 @@ RLEListResult RLEListOfIndex(RLEList list, int index)
         }
         list=list->next;
     }
-    return RLE_LIST_SUCCESS; // change the retrun value and placement (maybe)
+    return RLE_LIST_INDEX_OUT_OF_BOUNDS; // change the retrun value and placement (maybe)
 }
 
 char* RLEListExportToString(RLEList list, RLEListResult* result)

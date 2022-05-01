@@ -14,7 +14,6 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream);
 
 RLEList asciiArtRead(FILE* in_stream)
 {
-    printf("now in ascii art read \n");
     RLEList header = RLEListCreate();
     RLEList ptr = header;
     char buffer [BUFFER_SIZE] = "";
@@ -22,23 +21,17 @@ RLEList asciiArtRead(FILE* in_stream)
     {
         RLEListAppend(ptr,buffer[0]);
     }
-    printf("/////////////////////////////////////////////////////////");
     return header;
 }
 
-//prints given list to file (not encoded)
 RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
 {
-    int listSize = RLEListSize(list);
-    int index = 0;
     RLEListResult result;
-    //char* string = malloc((sizeof)(*string)*listSize);
     char* string = RLEListExportToString(list,&result);
     RLEListDestroy(list);
     while (string[0] != '\0')
     {
-        int counter = (int)(*(string+1)-'0');
-        for (counter;counter>0;counter--)
+        for (int counter = (int)(*(string+1)-'0');counter>0;counter--)
         {
             char array [2];
             array[0]= string[0];
@@ -47,7 +40,6 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
         }
         string=string+3;
     }
-    //free(string);
     return RLE_LIST_SUCCESS;
 }
     /*
@@ -66,7 +58,7 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
         }
         stringEncoded += MEMBERS_OF_NODE;
     }
-    /*int indexOfEncoded = 0;
+    int indexOfEncoded = 0;
     int indexOfNotEncoded = 0;
     while(sizeNode>0)
     {
@@ -87,7 +79,6 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
 
 RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
 {
-    printf("now in ascii art print encoded \n");
     RLEListResult result;
     if ((list == NULL)||(out_stream==NULL))
     {
