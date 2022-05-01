@@ -16,6 +16,7 @@ RLEList RLEListCreate()
     RLEList list = malloc(sizeof(*list));
     if (list==NULL)
     {
+        free(list);
         return NULL;
     }
     list->letter = '\0';
@@ -90,7 +91,10 @@ int RLEListSize(RLEList list)
 
 char RLEListGet(RLEList list, int index, RLEListResult *result)
 {
-    *result = RLE_LIST_SUCCESS;
+    if (result != NULL)
+    {
+        *result = RLE_LIST_SUCCESS;
+    }
     if ( index == 0 )
     {
         return list->letter;
@@ -113,7 +117,10 @@ char RLEListGet(RLEList list, int index, RLEListResult *result)
     }
     if (list == NULL)
     {
-        *result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
+        if (result != NULL)
+        {
+            *result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
+        }
         return '0';
     }
     return list->letter;
@@ -177,7 +184,10 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
 {
     if (!list)
     {
-        *result = RLE_LIST_NULL_ARGUMENT;
+        if (result != NULL)
+        {
+            *result = RLE_LIST_NULL_ARGUMENT;
+        }
     }
 
     RLEList tempPointer = list;
@@ -187,11 +197,15 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         nodeCount++;
         tempPointer = tempPointer->next;
     }
-    char *string = malloc(sizeof(char)*nodeCount*NODE_INFO+1);
+    char *string = malloc(sizeof(char)*nodeCount*NODE_INFO);
     if (!string)
     {
-        *result = RLE_LIST_OUT_OF_MEMORY;
+        if (result != NULL)
+        {
+            *result = RLE_LIST_OUT_OF_MEMORY;
+        }
     }
+    *(string + nodeCount*NODE_INFO) = '\0';
     int stringIndex = 0;
     do
     {
@@ -204,13 +218,20 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
 	    list = list->next;
     } while(list);
 
-    if (stringIndex == NODE_INFO*nodeCount){
-        *result = RLE_LIST_SUCCESS;
-    }
-
-    if (*result != RLE_LIST_SUCCESS)
+    if (stringIndex == NODE_INFO*nodeCount)
     {
-        return NULL;
+        if (result != NULL)
+        {
+            *result = RLE_LIST_SUCCESS;
+        }
+    }
+    if (result != NULL)
+    {
+        if (*result != RLE_LIST_SUCCESS)
+        {
+            free(string);
+            return NULL;
+        }
     }
     return string;
 }
