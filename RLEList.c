@@ -1,6 +1,5 @@
 #include "RLEList.h"
 #include <stdlib.h>
-#include <string.h>
 
 
 #define NODE_INFO 3
@@ -49,28 +48,27 @@ RLEListResult RLEListAppend (RLEList list, char value)
         return RLE_LIST_SUCCESS;
     }
     
-    RLEList tempPointer = list;
-    
-    while (tempPointer->next)
+
+    while (list->next)
     {
-     	tempPointer = tempPointer->next;
+     	list = list->next;
     }
 
-    if (value == tempPointer->letter)
+    if (value == list->letter)
     {
-        tempPointer->times++;
+        list->times++;
         return RLE_LIST_SUCCESS;
     }
 
-    tempPointer->next = RLEListCreate();
-    if (tempPointer->next == NULL)
+    list->next = RLEListCreate();
+    if (list->next == NULL)
     {
         return RLE_LIST_OUT_OF_MEMORY;
     }
 
-    tempPointer->next->letter = value;
-    tempPointer->next->times = 1;
-    tempPointer->next->next = NULL;
+    list->next->letter = value;
+    list->next->times = 1;
+    list->next->next = NULL;
     return RLE_LIST_SUCCESS;
 }
 
@@ -81,12 +79,12 @@ int RLEListSize(RLEList list)
     {
         return EMPTY_POINTER;
     }
-    RLEList tempPointer = list;
-    int count = tempPointer->times;
-    while (tempPointer->next)
+
+    int count = list->times;
+    while (list->next)
     {
-        tempPointer = tempPointer->next;
-        count += tempPointer->times;
+        list = list->next;
+        count += list->times;
     }
     return count;
 }
@@ -94,10 +92,9 @@ int RLEListSize(RLEList list)
 char RLEListGet(RLEList list, int index, RLEListResult *result)
 {
     *result = RLE_LIST_SUCCESS;
-    RLEList tempPointer = list;
-    while(tempPointer != NULL)
+    while(list != NULL)
     {
-        for (int counter = tempPointer->times; counter>0;counter--)
+        for (int counter = list->times; counter>0;counter--)
         {
             index--;
             if (index == 0)
@@ -109,14 +106,14 @@ char RLEListGet(RLEList list, int index, RLEListResult *result)
         {
             break;
         }
-        tempPointer=tempPointer->next;
+        list=list->next;
     }
-    if (tempPointer == NULL)
+    if (list == NULL)
     {
         *result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
         return '0';
     }
-    return tempPointer->letter;
+    return list->letter;
 }
 
 RLEListResult RLEListRemove(RLEList list, int index)
@@ -165,7 +162,7 @@ RLEListResult RLEListRemove(RLEList list, int index)
         tempPointer->letter = tempPointer->next->letter;
         if (tempPointer == list)
 	    {
-
+            return RLE_LIST_ERROR;
 	    }
         free(tempPointer->next);
         return RLE_LIST_SUCCESS;
@@ -178,24 +175,6 @@ RLEListResult RLEListRemove(RLEList list, int index)
     return RLE_LIST_SUCCESS;
 }
 
-
-RLEListResult RLEListOfIndex(RLEList list, int index)
-{
-    while(list->next!=NULL)
-        {
-        for (int counter = list->times; counter>0;counter--)
-        {
-            index--;
-            if (index == 0)
-            {
-                return RLE_LIST_SUCCESS;
-            }
-        }
-        list=list->next;
-    }
-    return RLE_LIST_INDEX_OUT_OF_BOUNDS; // change the retrun value and placement (maybe)
-}
-
 char* RLEListExportToString(RLEList list, RLEListResult* result)
 {
     if (!list)
@@ -203,22 +182,25 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         *result = RLE_LIST_NULL_ARGUMENT;
     }
     int nodeCount = RLENodeNumber(list);
-    char *string = malloc(sizeof(char)*nodeCount*NODE_INFO);
+    char *string = malloc(sizeof(char)*nodeCount*NODE_INFO+1);
     if (!string)
     {
         *result = RLE_LIST_OUT_OF_MEMORY;
     }
-    RLEList tempPointer	= list;
+    for (int i=0;i<nodeCount*NODE_INFO+1;i++)
+    {
+        *(string+i)='\0';
+    }
     int stringIndex = 0;
     do {
-        *(string+stringIndex) = tempPointer->letter;
+        *(string+stringIndex) = list->letter;
         stringIndex++;
-        *(string+stringIndex) = tempPointer->times + '0';
+        *(string+stringIndex) = list->times + '0';
         stringIndex++;
         *(string+stringIndex) = '\n';
         stringIndex++;
-	tempPointer = tempPointer->next;
-    } while(tempPointer);
+	list = list->next;
+    } while(list);
 
     if (stringIndex == NODE_INFO*nodeCount){
         *result = RLE_LIST_SUCCESS;
@@ -234,28 +216,26 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
 int RLENodeNumber(RLEList list)
 {
     int nodeCount = 1;
-    RLEList tempPointer = list;
-    while (tempPointer->next)
+    while (list->next)
     {
         nodeCount++;
-        tempPointer = tempPointer->next;
+        list = list->next;
     }
     return nodeCount;
 }
 
 RLEListResult RLEListMap (RLEList list, MapFunction map_function) // changes the letters in node according to mapfunction
 {
-    RLEList ptr = list; // pointer to the current node being worked on
     char temp;
-    if ((ptr==NULL) || (map_function == NULL))
+    if ((list==NULL) || (map_function == NULL))
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
-    while (ptr != NULL)
+    while (list != NULL)
     {
-        temp = map_function(ptr->letter);
-        ptr->letter = temp;
-        ptr = ptr->next;
+        temp = map_function(list->letter);
+        lisr->letter = temp;
+        list = list->next;
     }
     return RLE_LIST_SUCCESS;
 }
