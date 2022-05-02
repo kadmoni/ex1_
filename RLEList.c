@@ -354,6 +354,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
 
 RLEListResult RLEListMap (RLEList list, MapFunction map_function) // changes the letters in node according to mapfunction
 {
+    RLEList tempJoin=list;
     char temp;
     if ((list==NULL) || (map_function == NULL))
     {
@@ -365,6 +366,7 @@ RLEListResult RLEListMap (RLEList list, MapFunction map_function) // changes the
         list->letter = temp;
         list = list->next;
     }
+    RLEListNodeJoin(tempJoin);
     return RLE_LIST_SUCCESS;
 }
 
@@ -376,7 +378,7 @@ void RLEListNodeJoin(RLEList list)
         return;
     }
     
-    bool repetition = false;
+    int repetition = false;
     char nextLetter = list->next->letter;
     
     while(list->next)
@@ -393,13 +395,17 @@ void RLEListNodeJoin(RLEList list)
         }
         nextLetter = list->next->letter;
     }
-    
     if (repetition)
     {
         RLEList tempPointer = list->next;
         list->times = (list->times) + (list->next->times);
         list->next = list->next->next;
         free(tempPointer);
+        RLEListNodeJoin(list);
+        return;
+    }
+    else
+    {
         return;
     }
 }
