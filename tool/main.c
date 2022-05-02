@@ -38,13 +38,12 @@ int main(int argc, char** argv) {
     {
 	    RLEList header = asciiArtRead(input);
         fclose(input);
-        RLEListResult result = asciiArtPrintEncoded(header, output);
-        fclose(output);
-        RLEListDestroy(list);
-        if (result != RLE_LIST_SUCCESS)
+        if (asciiArtPrintEncoded(header, output) != RLE_LIST_SUCCESS)
         {
-            printf("Error encoding ascii art");
+            printf("Error in AsciiArtPrintEncoded");
         }
+        fclose(output);
+        RLEListDestroy(header);
         return 0;
     }
 
@@ -53,15 +52,18 @@ int main(int argc, char** argv) {
 	    RLEList header = asciiArtRead(input);
         fclose(input);
         RLEListMap(header, &invertMapping);
-        asciiArtPrint(header, output);
+        if(asciiArtPrint(header, output) != RLE_LIST_SUCCESS)
+        {
+            printf("Error in AsciiArtPrint");
+        }
         fclose(output);
-        RLEListDestroy(list);
+        RLEListDestroy(header);
         return 0;
     }
     return 1;
 }
 
-
+//inverts Ascii picture using @ and ' '
 char invertMapping (char toInvert)
 {
     if (toInvert == ' ')

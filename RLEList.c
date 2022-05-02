@@ -15,7 +15,7 @@ struct RLEList_t{
     struct RLEList_t* next;
 };
 
-void RLEListNodeJoin(RLEList list);
+void RLEListNodeJoin(RLEList list); // joins neighbor nodes if letter is equal
 
 
 RLEList RLEListCreate()
@@ -32,7 +32,8 @@ RLEList RLEListCreate()
     return list;
 }
 
-void RLEListDestroy(RLEList list) {
+void RLEListDestroy(RLEList list)
+{
     while(list) {
         RLEList toDelete = list;
         list = list->next;
@@ -163,7 +164,7 @@ char RLEListGet(RLEList list, int index, RLEListResult *result)
 
 RLEListResult RLEListRemove(RLEList list, int index)
 {
-    RLEList header = list;
+    RLEList previousList = list;
     if (!list)
     {
         return RLE_LIST_NULL_ARGUMENT;
@@ -172,6 +173,7 @@ RLEListResult RLEListRemove(RLEList list, int index)
     {
         return RLE_LIST_INDEX_OUT_OF_BOUNDS;
     }
+
     index++;
     while(list != NULL)
     {
@@ -187,6 +189,7 @@ RLEListResult RLEListRemove(RLEList list, int index)
         {
             break;
         }
+        previousList = list;
         list=list->next;
     }
     if (list == NULL)
@@ -207,6 +210,7 @@ RLEListResult RLEListRemove(RLEList list, int index)
             (list->times)--;
         }
     }
+
     else if (list->times == FIRST_LETTER)
     {
         RLEList listToFree = list->next;
@@ -214,7 +218,7 @@ RLEListResult RLEListRemove(RLEList list, int index)
         list->letter = list->next->letter;
         list->next = list->next->next;
         free(listToFree);
-        RLEListNodeJoin(header);
+        RLEListNodeJoin(previousList);
         return RLE_LIST_SUCCESS;
     }
     else {
@@ -256,7 +260,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
     {
         if (result != NULL)
         {
-            *result = RLE_LIST_OUT_OF_MEMORY;
+            *result = RLE_LIST_ERROR;
         }
     }
     for (int i = ZERO; i<nodeCount*NODE_INFO+addToString+ONE;i++ )
@@ -310,7 +314,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
 
 RLEListResult RLEListMap (RLEList list, MapFunction map_function)
 {
-    RLEList Header = list;
+    RLEList header = list;
     char temp;
     if ((list==NULL) || (map_function == NULL))
     {
@@ -322,47 +326,27 @@ RLEListResult RLEListMap (RLEList list, MapFunction map_function)
         list->letter = temp;
         list = list->next;
     }
-    RLEListNodeJoin(Header);
+    while (header != NULL)
+    {
+        RLEListNodeJoin(header);
+        header = header->next;
+    }
     return RLE_LIST_SUCCESS;
 }
 
-void RLEListNodeJoin(RLEList list)
-{
-    
-    if (list->next == NULL)
+void RLEListNodeJoin(RLEList previousList) {
+    if (previousList->next == NULL)
     {
         return;
     }
-    
-    int repetition = false;
-    char nextLetter = list->next->letter;
-    
-    while(list->next)
-    {
-        if (list->letter == nextLetter)
-        {
-            repetition = true;
-            break;
-        }
-        list = list->next;
-        if (list->next == NULL)
-        {
-            return;
-        }
-        nextLetter = list->next->letter;
-    }
-    if (repetition)
-    {
-        RLEList listToFree = list->next;
-        list->times = (list->times) + (list->next->times);
-        list->next = list->next->next;
+    if (previousList->letter == previousList->next->letter) {
+        RLEList listToFree = previousList->next;
+        previousList->times = (previousList->times) + (previousList->next->times);
+        previousList->next = previousList->next->next;
         free(listToFree);
-        RLEListNodeJoin(list);
-        return;
-    }
-    else
-    {
+        RLEListNodeJoin(previousList);
         return;
     }
 }
+
 
