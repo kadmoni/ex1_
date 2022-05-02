@@ -49,6 +49,11 @@ RLEListResult RLEListAppend (RLEList list, char value)
 
     while (list->next)
     {
+        if (list->next->times == 0)
+        {
+            RLEListDestroy(list->next);
+            break;
+        }
      	list = list->next;
     }
 
@@ -84,18 +89,81 @@ int RLEListSize(RLEList list)
     while (list->next)
     {
         list = list->next;
-        count += list->times;
+        count = count + list->times;
     }
     return count;
 }
 
 char RLEListGet(RLEList list, int index, RLEListResult *result)
 {
-    if (result != NULL)
+    if (index<0)
     {
-        *result = RLE_LIST_SUCCESS;
+        if (result != NULL)
+        {
+            *result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
+        }
+        return 0;
     }
-    if ( index == 0 )
+    if ((list != NULL)&&(list->times > 0))
+    {
+        if (index == 0)
+        {
+            if (result != NULL)
+            {
+                *result = RLE_LIST_SUCCESS;
+            }
+            return list->letter;
+        }
+        while (list != NULL)
+        {
+            for (int count = 0; count<list->times;count++)
+            {
+                if (index == 0)
+                {
+                    if (result != NULL)
+                    {
+                        *result = RLE_LIST_SUCCESS;
+                    }
+                    return list->letter;
+                }
+                index--;
+            }
+            list = list->next;
+        }
+        if (result != NULL)
+        {
+            *result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
+        }
+        return 0;
+    }
+    else if (list == NULL)
+    {
+        if (result != NULL)
+        {
+            *result = RLE_LIST_NULL_ARGUMENT;
+        }
+        return 0;
+    }
+    else
+    {
+        if (result != NULL)
+        {
+            *result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
+        }
+        return 0;
+    }
+}
+    /*
+    index++;
+    if (list == NULL)
+    {
+        if (result != NULL)
+        {
+            *result = RLE_LIST_NULL_ARGUMENT;
+        }
+        return 0;
+    }
+    if ( index == 1 )
     {
         return list->letter;
     }
@@ -121,13 +189,26 @@ char RLEListGet(RLEList list, int index, RLEListResult *result)
         {
             *result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
         }
-        return '0';
+        return 0;
+    }
+    if (result != NULL)
+    {
+        *result = RLE_LIST_SUCCESS;
     }
     return list->letter;
-}
+}*/
 
 RLEListResult RLEListRemove(RLEList list, int index)
 {
+    if (!list)
+    {
+        return RLE_LIST_NULL_ARGUMENT;
+    }
+    if (list->times == 0) // not clear what to do in index 1
+    {
+        return RLE_LIST_INDEX_OUT_OF_BOUNDS;
+    }
+    index++;
     while(list != NULL)
     {
         for (int counter = list->times; counter>0;counter--)
@@ -158,7 +239,11 @@ RLEListResult RLEListRemove(RLEList list, int index)
     {
         if (list->times == 1)
         {
-            RLEListDestroy(list);
+            list->times = 0;
+            list->letter = '\0';
+            list->next = NULL;
+            //RLEListDestroy(list);
+            return RLE_LIST_SUCCESS;
         }
         else {
             (list->times)--;
@@ -166,11 +251,11 @@ RLEListResult RLEListRemove(RLEList list, int index)
     }
     else if (list->times == 1)
     {
-        list->next = list->next->next;
+        RLEList tempPointer = list->next;
         list->times = list->next->times;
         list->letter = list->next->letter;
-        list = list->next;
-        free(list);
+        list->next = list->next->next;
+        free(tempPointer);
         return RLE_LIST_SUCCESS;
     }
     else {
@@ -187,17 +272,26 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         if (result != NULL)
         {
             *result = RLE_LIST_NULL_ARGUMENT;
+            return NULL;
         }
     }
 
     RLEList tempPointer = list;
     int nodeCount = 1;
+    int addToString = 0;
+    int tempTimes;
     while (tempPointer->next)
     {
+        tempTimes = tempPointer->times;
+        while (tempTimes >= 10)
+        {
+            addToString++;
+            tempTimes = tempTimes/10;
+        }
         nodeCount++;
         tempPointer = tempPointer->next;
     }
-    char *string = malloc(sizeof(char)*nodeCount*NODE_INFO);
+    char *string = malloc(sizeof(char)*nodeCount*NODE_INFO+addToString+1);
     if (!string)
     {
         if (result != NULL)
@@ -205,20 +299,39 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
             *result = RLE_LIST_OUT_OF_MEMORY;
         }
     }
-    *(string + nodeCount*NODE_INFO) = '\0';
+    for (int i = 0; i<nodeCount*NODE_INFO+addToString+1;i++ )
+    {
+        *(string+i) = '\0';
+    }
     int stringIndex = 0;
     do
     {
         *(string+stringIndex) = list->letter;
         stringIndex++;
-        *(string+stringIndex) = list->times + '0';
-        stringIndex++;
+        tempTimes=list->times;
+        int power = 0;
+        while (tempTimes >= 10)
+        {
+            power++;
+            tempTimes = tempTimes/10;
+        }
+        while(power>=0)
+        {
+            int devision = 1;
+            for ( ; power > 0; power--)
+                {
+                    devision = devision * 10;
+                }
+            *(string + stringIndex) = ((list->times/devision)%10) + '0';
+            power--;
+            stringIndex++;
+        }
         *(string+stringIndex) = '\n';
         stringIndex++;
 	    list = list->next;
     } while(list);
-
-    if (stringIndex == NODE_INFO*nodeCount)
+    //string[nodeCount*NODE_INFO+addToString] = '\0';
+    if (stringIndex == NODE_INFO*nodeCount+addToString)
     {
         if (result != NULL)
         {

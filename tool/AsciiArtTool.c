@@ -26,7 +26,20 @@ RLEList asciiArtRead(FILE* in_stream)
 
 RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
 {
+    int listSize = RLEListSize(list);
     RLEListResult result;
+    for (int index=0;index<listSize;index++)
+    {
+        char array [2]={0};
+        array[0] = RLEListGet(list,index,&result);
+        array [1] = '\0';
+        fputs(array,out_stream);
+    }
+    return RLE_LIST_SUCCESS;
+}
+    /*
+     * new
+     * RLEListResult result;
     char* string = RLEListExportToString(list,&result);
     char*header = string;
     RLEListDestroy(list);
@@ -43,7 +56,7 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
     }
     free(header);
     return RLE_LIST_SUCCESS;
-}
+}*/
     /*
     printf("now in ascii art print function \n");
     if ((list == NULL)||(out_stream==NULL))
