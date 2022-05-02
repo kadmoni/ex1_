@@ -3,31 +3,38 @@
 #include "RLEList.h"
 #include "AsciiArtTool.h"
 
-#define BUFFER_SIZE 2
+#define ARGUMENTS_NUMBER 4
+#define INPUT 2
+#define OUTPUT 3
+#define FLAG 1
+#define ZERO 0
+
+
+
 
 char invertMapping (char toInvert);
 
 
 int main(int argc, char** argv) {
 
-    if (argc != 4) {
+    if (argc != ARGUMENTS_NUMBER) {
         printf("Problem: unexpected number of arguments received %d",argc);
-        return 0;
+        return ZERO;
     }
 
-    FILE *input = fopen(argv[2], "r");
+    FILE *input = fopen(argv[INPUT], "r");
     if (input == NULL) {
-        printf("Error: cannot open %s", argv[2]);
-        return 0;
+        printf("Error: cannot open %s", argv[INPUT]);
+        return ZERO;
     }
-    FILE *output = fopen(argv[3], "w");
+    FILE *output = fopen(argv[OUTPUT], "w");
     if (output == NULL) {
         fclose(input);
-        printf("Error: cannot open %s", argv[3]);
-        return 0;
+        printf("Error: cannot open %s", argv[OUTPUT]);
+        return ZERO;
     }
     
-    if (!strcmp(argv[1],"-e"))
+    if (!strcmp(argv[FLAG],"-e"))
     {
 	    RLEList header = asciiArtRead(input);
         RLEListResult result = asciiArtPrintEncoded(header, output);
@@ -37,7 +44,7 @@ int main(int argc, char** argv) {
         }
     }
 
-    if (!strcmp(argv[1],"-i"))
+    if (!strcmp(argv[FLAG],"-i"))
     {
 	    RLEList header = asciiArtRead(input);
 	    RLEListMap(header, &invertMapping);

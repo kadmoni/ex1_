@@ -5,9 +5,6 @@
 #ifndef AsciiArtTool_H
 #define AsciiArtTool_H
 
-#include <stdio.h>
-#include <stdbool.h>
-
 
 /**
 *   asciiArtRead: Reads the given file and uses RLE method to compress it.
