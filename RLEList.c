@@ -11,6 +11,9 @@ struct RLEList_t{
     struct RLEList_t* next;
 };
 
+void RLEListNodeJoin(RLEList list);
+
+
 RLEList RLEListCreate()
 {
     RLEList list = malloc(sizeof(*list));
@@ -274,10 +277,10 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
     }
 
     RLEList tempPointer = list;
-    int nodeCount = 1;
+    int nodeCount = 0;
     int addToString = 0;
     int tempTimes;
-    while (tempPointer->next)
+    while (tempPointer)
     {
         tempTimes = tempPointer->times;
         while (tempTimes >= 10)
@@ -374,19 +377,21 @@ void RLEListNodeJoin(RLEList list)
     }
     
     bool repetition = false;
-    RLEList firstRepetedNode = list;
     char nextLetter = list->next->letter;
     
     while(list->next)
     {
-        if (list->letter = nextLetter)
+        if (list->letter == nextLetter)
         {
-            firstRepetedNode = list;
             repetition = true;
             break;
         }
-        nextLetter = list->next->letter;
         list = list->next;
+        if (list->next == NULL)
+        {
+            return;
+        }
+        nextLetter = list->next->letter;
     }
     
     if (repetition)
