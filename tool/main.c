@@ -68,6 +68,10 @@ char invertMapping (char toInvert)
     {
         return '@';
     }
+    else if (toInvert == '@')
+    {
+        return ' ';
+    }
     else
     {
         return toInvert;
