@@ -317,8 +317,9 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         }
         while(power>=0)
         {
+            int tempPower = power;
             int devision = 1;
-            for ( ; power > 0; power--)
+            for ( ; tempPower > 0; tempPower--)
                 {
                     devision = devision * 10;
                 }
