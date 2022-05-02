@@ -30,21 +30,28 @@ int main(int argc, char** argv) {
     if (!strcmp(argv[1],"-e"))
     {
 	    RLEList header = asciiArtRead(input);
+        fclose(input);
         RLEListResult result = asciiArtPrintEncoded(header, output);
+        fclose(output);
+        RLEListDestroy(list);
         if (result != RLE_LIST_SUCCESS)
         {
             printf("Error encoding ascii art");
         }
+        return 0;
     }
 
     if (!strcmp(argv[1],"-i"))
     {
 	    RLEList header = asciiArtRead(input);
-	    RLEListMap(header, &invertMapping);
+        fclose(input);
+        RLEListMap(header, &invertMapping);
         asciiArtPrint(header, output);
+        fclose(output);
+        RLEListDestroy(list);
+        return 0;
     }
-    fclose(input);
-    fclose(output);
+    return 1;
 }
 
 
