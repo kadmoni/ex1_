@@ -200,6 +200,7 @@ char RLEListGet(RLEList list, int index, RLEListResult *result)
 
 RLEListResult RLEListRemove(RLEList list, int index)
 {
+    RLEList header = list;
     if (!list)
     {
         return RLE_LIST_NULL_ARGUMENT;
@@ -230,11 +231,6 @@ RLEListResult RLEListRemove(RLEList list, int index)
         return RLE_LIST_INDEX_OUT_OF_BOUNDS;
     }
 
-//   // RLEListResult currentResult = RLEListOfIndex(tempPointer, index);
-//    if (currentResult != RLE_LIST_SUCCESS)
-//    {
-//        return currentResult;
-//    }
     if (list->next == NULL)
     {
         if (list->times == 1)
@@ -256,6 +252,7 @@ RLEListResult RLEListRemove(RLEList list, int index)
         list->letter = list->next->letter;
         list->next = list->next->next;
         free(tempPointer);
+        RLEListNodeJoin(header);
         return RLE_LIST_SUCCESS;
     }
     else {
@@ -366,5 +363,39 @@ RLEListResult RLEListMap (RLEList list, MapFunction map_function) // changes the
         list = list->next;
     }
     return RLE_LIST_SUCCESS;
+}
+
+void RLEListNodeJoin(RLEList list)
+{
+    
+    if (list->next == NULL)
+    {
+        return;
+    }
+    
+    bool repetition = false;
+    RLEList firstRepetedNode = list;
+    char nextLetter = list->next->letter;
+    
+    while(list->next)
+    {
+        if (list->letter = nextLetter)
+        {
+            firstRepetedNode = list;
+            repetition = true;
+            break;
+        }
+        nextLetter = list->next->letter;
+        list = list->next;
+    }
+    
+    if (repetition)
+    {
+        RLEList tempPointer = list->next;
+        list->times = (list->times) + (list->next->times);
+        list->next = list->next->next;
+        free(tempPointer);
+        return;
+    }
 }
 
